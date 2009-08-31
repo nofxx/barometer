@@ -8,6 +8,7 @@ $:.unshift((File.join(File.dirname(__FILE__), '..', 'lib')))
 require 'barometer'
 
 FakeWeb.allow_net_connect = false
+Barometer.debug!
 
 KEY_FILE = File.expand_path(File.join('~', '.barometer'))
 
@@ -58,15 +59,19 @@ end
       'fixtures/geocode',
       '40_73.xml')
     )
-  )
+                       )
+
 
   # FakeWeb.register_uri(:get,
   #   "#{geo_url}gl=&q=90210&output=xml&key=#{KEY}",
   #   :body => File.read(File.join(File.dirname(__FILE__),
   #     'fixtures/geocode',
   #     '90210.xml')
-  #   )
-  # )
+#   )
+
+# )
+
+
   FakeWeb.register_uri(:get,
     "#{geo_url}gl=&q=New%20York%2C%20NY&output=xml&key=#{KEY}",
     :body => File.read(File.join(File.dirname(__FILE__),
@@ -75,7 +80,7 @@ end
     )
   )
   FakeWeb.register_uri(:get,
-    "#{geo_url}gl=CA&key=#{@key}&output=xml&q=T5B%204M9",
+    "#{geo_url}gl=CA&key=#{KEY}&output=xml&q=T5B%204M9",
     :body => File.read(File.join(File.dirname(__FILE__),
       'fixtures/geocode',
       'T5B4M9.xml')

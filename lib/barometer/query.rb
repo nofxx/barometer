@@ -71,6 +71,7 @@ module Barometer
              preferred_formats.include?(Query::Format::Coordinates.format)
         if preferred_formats.include?(@format.to_sym)
           skip_conversion = true
+          @geo = true
           converted_query = self.dup
         end
       end
@@ -108,7 +109,7 @@ module Barometer
           puts "enhance geocode: #{converted_query.q}" if Barometer::debug?
           geo_query = Query::Format::Coordinates.to(converted_query)
           @geo = geo_query.geo if (geo_query && geo_query.geo)
-          converted_query.geo = @geo.dup if @geo
+          converted_query.geo = @geo.dup
         end
       end
 

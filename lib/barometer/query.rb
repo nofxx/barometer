@@ -17,7 +17,7 @@ module Barometer
   #   not accept the query string.
   #
   class Query
-    
+
     # This array defines the order to check a query for the format
     #
     FORMATS = %w(
@@ -29,10 +29,10 @@ module Barometer
       :coordinates => "Coordinates", :icao => "Icao",
       :geocode => "Geocode"
     }
-    
+
     attr_accessor :format, :q, :country_code
     attr_accessor :geo, :timezone, :conversions
-    
+
     def initialize(query=nil)
       return unless query
       @q = query
@@ -54,14 +54,14 @@ module Barometer
         end
       end
     end
-    
+
     # take a list of acceptable (and ordered by preference) formats and convert
     # the current query (q) into the most preferred and acceptable format. a
     # side effect of the conversions may reveal the country_code, if so save it
     #
     def convert!(preferred_formats=nil)
       raise ArgumentError unless (preferred_formats && preferred_formats.size > 0)
-      
+
       # why convert if we are already there?
       # (except in the case that the serivce excepts coordinates and we have a
       # a geocode ... the google geocode results are superior)
@@ -74,7 +74,7 @@ module Barometer
           converted_query = self.dup
         end
       end
-      
+
       unless skip_conversion
         # go through each acceptable format and try to convert to that
         converted = false
@@ -88,7 +88,7 @@ module Barometer
           unless converted
             unless converted_query = get_conversion(preferred_format)
               converted_query =  Query::Format.const_get(klass.to_s).to(self)
-            end  
+            end
             converted = true if converted_query
           end
           if converted
@@ -98,7 +98,7 @@ module Barometer
           end
         end
       end
-      
+
       # force geocode?, unless we already did
       #
       if Barometer.force_geocode && !@geo
@@ -108,10 +108,10 @@ module Barometer
           puts "enhance geocode: #{converted_query.q}" if Barometer::debug?
           geo_query = Query::Format::Coordinates.to(converted_query)
           @geo = geo_query.geo if (geo_query && geo_query.geo)
-          converted_query.geo = @geo.dup
+          converted_query.geo = @geo.dup if @geo
         end
       end
-      
+
       # enhance timezone?, unless we already did
       #
       if Barometer.enhance_timezone && !@timezone
@@ -123,10 +123,10 @@ module Barometer
           converted_query.timezone = @timezone.dup
         end
       end
-      
+
       converted_query
     end
-    
+
 # save the important parts of the conversion ... by saving conversion we
 # can avoid doing the same conversion multiple times
 #
@@ -151,6 +151,6 @@ def get_conversion(format)
     nil
   end
 end
-    
+
   end
-end  
+end

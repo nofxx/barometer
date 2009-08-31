@@ -1,15 +1,15 @@
-require 'spec_helper'
+require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe "Web Services" do
-  
+
   describe "and the class method" do
-    
+
     describe "source" do
-      
+
       it "stubs fetch" do
         lambda { Barometer::WebService.fetch }.should raise_error(NotImplementedError)
       end
-      
+
       it "detects a Query object" do
         invalid = 1
         Barometer::WebService.send("_is_a_query?").should be_false
@@ -20,7 +20,7 @@ describe "Web Services" do
       end
 
     end
-    
+
   end
-  
+
 end

@@ -238,14 +238,12 @@ describe "Query" do
         end
 
         it "skips converting to icao" do
-          pending
           acceptable_formats = [:icao]
           query = @query.convert!(acceptable_formats)
           query.should be_nil
         end
 
         it "skips converting to postalcode" do
-          pending
           acceptable_formats = [:postalcode]
           query = @query.convert!(acceptable_formats)
           query.should be_nil
